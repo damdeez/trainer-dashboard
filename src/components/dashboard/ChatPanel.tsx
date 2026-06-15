@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Send } from "lucide-react";
 import { useMessages, useSendMessage } from "@/lib/hooks/useApi";
 import type { Message } from "@/lib/api/schemas";
 import { cn } from "@/lib/utils";
@@ -78,16 +77,16 @@ export function ChatPanel({ clientId }: ChatPanelProps) {
   }
 
   return (
-    <div className="flex h-full flex-col">
-      <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
+    <div className='flex h-full flex-col'>
+      <div ref={scrollRef} className='flex-1 space-y-3 overflow-y-auto p-4'>
         {isLoading && <ChatSkeleton />}
 
         {isError && (
-          <div className="text-muted-foreground py-8 text-center text-sm">
+          <div className='text-muted-foreground py-8 text-center text-sm'>
             <p>Couldn&apos;t load the conversation.</p>
             <button
               onClick={() => refetch()}
-              className="text-foreground mt-2 underline underline-offset-4"
+              className='text-foreground mt-2 underline underline-offset-4'
             >
               Try again
             </button>
@@ -95,16 +94,18 @@ export function ChatPanel({ clientId }: ChatPanelProps) {
         )}
 
         {!isLoading && !isError && messages?.length === 0 && (
-          <p className="text-muted-foreground py-8 text-center text-sm">
+          <p className='text-muted-foreground py-8 text-center text-sm'>
             No messages yet. Say hello 👋
           </p>
         )}
 
-        {messages?.map((m) => <ChatBubble key={m.id} message={m} />)}
+        {messages?.map((m) => (
+          <ChatBubble key={m.id} message={m} />
+        ))}
       </div>
 
       <form
-        className="flex items-end gap-2 border-t p-3"
+        className='flex items-end gap-2 border-t p-3'
         onSubmit={(e) => {
           e.preventDefault();
           send();
@@ -114,19 +115,18 @@ export function ChatPanel({ clientId }: ChatPanelProps) {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
+            if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
               send();
             }
           }}
-          placeholder="Message your client…  (Enter to send, Shift+Enter for newline)"
+          placeholder='Message your client…  (Enter to send, Shift+Enter for newline)'
           rows={1}
-          className="max-h-32 min-h-10 flex-1 resize-none"
-          aria-label="Message"
+          className='max-h-32 min-h-10 flex-1 resize-none'
+          aria-label='Message'
         />
-        <Button type="submit" size="icon" disabled={!draft.trim()}>
-          <Send className="size-4" />
-          <span className="sr-only">Send</span>
+        <Button className="w-20 min-h-10" type='submit' size='icon' disabled={!draft.trim()}>
+          Send
         </Button>
       </form>
     </div>

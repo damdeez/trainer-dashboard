@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trainer Dashboard",
+  title: "Dashboard",
   description: "Future coach dashboard — manage clients, workouts, and chat.",
 };
 

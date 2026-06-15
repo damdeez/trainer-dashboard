@@ -97,7 +97,8 @@ export function ClientDirectory() {
       return;
     }
     e.preventDefault();
-    const idx = rows.indexOf(document.activeElement as HTMLElement);
+    const active = document.activeElement;
+    const idx = rows.findIndex((row) => row === active);
     const next =
       e.key === "ArrowDown"
         ? Math.min(idx + 1, rows.length - 1)

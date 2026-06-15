@@ -6,6 +6,14 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Code style
 
+- **No `as`, `any`, or `unknown` as escape hatches.** Don't reach for type
+  assertions (`as`), `any`, or `unknown` to silence the compiler. Prefer real
+  types, generics, and runtime narrowing — `instanceof`, `in`, discriminated
+  unions, and zod parsing — so types are *proven*, not asserted. (`as const` is
+  fine.) The one allowed `unknown` is at a genuinely untyped boundary —
+  `JSON.parse`, `Request.json()`, a `catch` variable — and only when it's
+  immediately validated with zod; never let it flow on untouched, and never
+  swap it for `any`.
 - **Component props: `interface`, not `type`.** Declare props as
   `interface FooProps { ... }`, not a type alias.
 - **Guard clauses, always braced.** Return early to avoid nesting:

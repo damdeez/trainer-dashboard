@@ -3,15 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
+  Activity,
   ArrowLeft,
   CalendarPlus,
   Dumbbell,
+  Info,
   ListPlus,
   MessageSquare,
   Pencil,
   Target,
 } from "lucide-react";
 import { useClient } from "@/lib/hooks/useApi";
+import { ApiRequestError } from "@/lib/api/fetcher";
 import type { ClientDetail } from "@/lib/api/schemas";
 import { formatRelative, formatWorkoutDate, initials } from "@/lib/format";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -70,14 +73,18 @@ function Overview({ client }: OverviewProps) {
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium">Things to know</h2>
+        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+          <Info className="size-4" /> Things to know
+        </h2>
         <p className="text-muted-foreground text-sm whitespace-pre-wrap">
           {client.thingsToKnow || "Nothing noted yet."}
         </p>
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium">Recent activity</h2>
+        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+          <Activity className="size-4" /> Recent activity
+        </h2>
         {client.activity.length > 0 ? (
           <ul className="space-y-3">
             {client.activity.slice(0, 8).map((a) => (
@@ -169,8 +176,7 @@ export function ClientDetailView({ clientId }: ClientDetailViewProps) {
   }
 
   if (isError) {
-    const notFound =
-      error && "status" in error && (error as { status: number }).status === 404;
+    const notFound = error instanceof ApiRequestError && error.status === 404;
     return (
       <div className="text-muted-foreground flex h-full flex-col items-center justify-center gap-3 p-8 text-center">
         <p className="text-foreground font-medium">
