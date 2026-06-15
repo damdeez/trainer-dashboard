@@ -20,13 +20,13 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Plus, Search, X } from "lucide-react";
 import { useCreateWorkout, useExercises } from "@/lib/hooks/useApi";
-import type { WorkoutExerciseInput } from "@/lib/api/schemas";
+import type { Exercise, WorkoutExerciseInput } from "@/lib/api/schemas";
 import { ResponsiveModal } from "./ResponsiveModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ExercisePickerSkeleton } from "./Skeletons";
 
 type Picked = WorkoutExerciseInput & { exerciseId: string };
 
@@ -107,6 +107,71 @@ function SortableExercise({ item, onChange, onRemove }: SortableExerciseProps) {
   );
 }
 
+interface ExerciseResultsProps {
+  isLoading: boolean;
+  results: Exercise[] | undefined;
+  pickedIds: ReadonlySet<string>;
+  onAdd: (ex: { id: string; name: string }) => void;
+}
+
+function ExerciseResults({
+  isLoading,
+  results,
+  pickedIds,
+  onAdd,
+}: ExerciseResultsProps) {
+  if (isLoading) {
+    return <ExercisePickerSkeleton />;
+  }
+
+  if (!results || results.length === 0) {
+    return (
+      <p className="text-muted-foreground p-4 text-center text-sm">
+        No exercises found.
+      </p>
+    );
+  }
+
+  return (
+    <ul className="divide-y">
+      {results.slice(0, 30).map((ex) => (
+        <li
+          key={ex.id}
+          className="flex items-center justify-between gap-2 p-2 text-sm"
+        >
+          <div className="min-w-0">
+            <p className="truncate">{ex.name}</p>
+            {ex.muscleGroups.length > 0 && (
+              <div className="mt-0.5 flex flex-wrap gap-1">
+                {ex.muscleGroups.slice(0, 3).map((m) => (
+                  <Badge
+                    key={m}
+                    variant="secondary"
+                    className="px-1.5 py-0 text-[10px]"
+                  >
+                    {m}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
+          <Button
+            type="button"
+            size="icon"
+            variant="ghost"
+            className="shrink-0"
+            disabled={pickedIds.has(ex.id)}
+            onClick={() => onAdd(ex)}
+            aria-label={`Add ${ex.name}`}
+          >
+            <Plus className="size-4" />
+          </Button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 interface CreateWorkoutDialogProps {
   clientId: string;
   open: boolean;
@@ -123,6 +188,7 @@ export function CreateWorkoutDialog({
   const [query, setQuery] = useState("");
   const [picked, setPicked] = useState<Picked[]>([]);
   const { data: results, isLoading } = useExercises({ q: query.trim() || undefined });
+  const pickedIds = new Set(picked.map((p) => p.exerciseId));
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -255,56 +321,12 @@ export function CreateWorkoutDialog({
             />
           </div>
           <div className="max-h-44 overflow-y-auto rounded-md border">
-            {isLoading ? (
-              <div className="space-y-2 p-2">
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-              </div>
-            ) : results && results.length > 0 ? (
-              <ul className="divide-y">
-                {results.slice(0, 30).map((ex) => {
-                  const already = picked.some((p) => p.exerciseId === ex.id);
-                  return (
-                    <li
-                      key={ex.id}
-                      className="flex items-center justify-between gap-2 p-2 text-sm"
-                    >
-                      <div className="min-w-0">
-                        <p className="truncate">{ex.name}</p>
-                        {ex.muscleGroups.length > 0 && (
-                          <div className="mt-0.5 flex flex-wrap gap-1">
-                            {ex.muscleGroups.slice(0, 3).map((m) => (
-                              <Badge
-                                key={m}
-                                variant="secondary"
-                                className="px-1.5 py-0 text-[10px]"
-                              >
-                                {m}
-                              </Badge>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <Button
-                        type="button"
-                        size="icon"
-                        variant="ghost"
-                        className="shrink-0"
-                        disabled={already}
-                        onClick={() => add(ex)}
-                        aria-label={`Add ${ex.name}`}
-                      >
-                        <Plus className="size-4" />
-                      </Button>
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <p className="text-muted-foreground p-4 text-center text-sm">
-                No exercises found.
-              </p>
-            )}
+            <ExerciseResults
+              isLoading={isLoading}
+              results={results}
+              pickedIds={pickedIds}
+              onAdd={add}
+            />
           </div>
         </div>
 

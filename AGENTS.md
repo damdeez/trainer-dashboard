@@ -20,6 +20,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
   `if (!client) { return null }`. Never write brace-less inline statements
   (`if (x) return null` / `if (x) doThing()`) — every `if` body gets braces on
   its own line.
+- **No nested ternaries.** A ternary may not contain another ternary in either
+  branch. For multi-way logic use early-return guard clauses, `if`/`else`, a
+  lookup map, or an extracted helper/component. A single, flat `a ? b : c` is
+  fine.
 - **Semantic HTML, no div soup.** Reach for the element that means what you
   intend (`button`, `nav`, `header`, `main`, `section`, `ul`/`li`, `form`,
   `label`, …) before falling back to `div`/`span`.

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { formatWorkoutDate, initials } from "@/lib/format";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Skeleton } from "@/components/ui/skeleton";
+import { DirectorySkeleton } from "./Skeletons";
 
 interface ClientRowProps {
   client: ClientSummary;
@@ -48,22 +48,6 @@ function ClientRow({ client, active }: ClientRowProps) {
   );
 }
 
-function DirectorySkeleton() {
-  return (
-    <ul className="space-y-1" aria-hidden>
-      {Array.from({ length: 6 }).map((_, i) => (
-        <li key={i} className="flex items-center gap-3 p-2">
-          <Skeleton className="size-9 rounded-full" />
-          <div className="flex-1 space-y-2">
-            <Skeleton className="h-3.5 w-32" />
-            <Skeleton className="h-3 w-40" />
-          </div>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 export function ClientDirectory() {
   const { data, isLoading, isError, refetch } = useClients();
   const params = useParams<{ clientId?: string }>();
@@ -73,13 +57,12 @@ export function ClientDirectory() {
   // No useMemo: the React Compiler memoizes this, and filtering a handful of
   // clients per keystroke is trivial regardless.
   const q = query.trim().toLowerCase();
-  const filtered = !data
-    ? []
-    : q
-      ? data.filter((c) =>
-          `${c.firstName} ${c.lastName}`.toLowerCase().includes(q),
-        )
-      : data;
+  let filtered = data ?? [];
+  if (q) {
+    filtered = filtered.filter((c) =>
+      `${c.firstName} ${c.lastName}`.toLowerCase().includes(q),
+    );
+  }
 
   const rootRef = useRef<HTMLDivElement>(null);
 

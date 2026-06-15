@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { formatTime } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ChatSkeleton } from "./Skeletons";
 
 interface ChatBubbleProps {
   message: Message;
@@ -27,7 +27,7 @@ function ChatBubble({ message }: ChatBubbleProps) {
           isPending && "opacity-60",
         )}
       >
-        <p className="break-words whitespace-pre-wrap">{message.body}</p>
+        <p className="wrap-break-word whitespace-pre-wrap">{message.body}</p>
         <p
           className={cn(
             "mt-1 text-[10px]",
@@ -37,17 +37,6 @@ function ChatBubble({ message }: ChatBubbleProps) {
           {isPending ? "Sending…" : formatTime(message.createdAt)}
         </p>
       </div>
-    </div>
-  );
-}
-
-function ChatSkeleton() {
-  return (
-    <div className="space-y-3" aria-hidden>
-      <Skeleton className="h-10 w-48" />
-      <Skeleton className="ml-auto h-10 w-40" />
-      <Skeleton className="h-14 w-56" />
-      <Skeleton className="ml-auto h-10 w-44" />
     </div>
   );
 }

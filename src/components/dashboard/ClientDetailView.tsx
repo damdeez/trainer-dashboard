@@ -20,32 +20,12 @@ import { formatRelative, formatWorkoutDate, initials } from "@/lib/format";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DetailSkeleton } from "./Skeletons";
 import { ChatPanel } from "./ChatPanel";
 import { EditClientDialog } from "./EditClientDialog";
 import { BookWorkoutDialog } from "./BookWorkoutDialog";
 import { CreateWorkoutDialog } from "./CreateWorkoutDialog";
-
-function DetailSkeleton() {
-  return (
-    <div className="space-y-6 p-4">
-      <div className="flex items-center gap-4">
-        <Skeleton className="size-14 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-5 w-40" />
-          <Skeleton className="h-3.5 w-28" />
-        </div>
-      </div>
-      <Skeleton className="h-8 w-56" />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-4/5" />
-        <Skeleton className="h-4 w-3/5" />
-      </div>
-    </div>
-  );
-}
 
 interface OverviewProps {
   client: ClientDetail;
