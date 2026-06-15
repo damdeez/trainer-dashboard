@@ -81,10 +81,20 @@ shadcn/ui · TanStack Query · Drizzle ORM + Neon Postgres · Vitest.
   lighter, fully typed, faster cold starts. The driver is
   `@neondatabase/serverless` (HTTP — no pool to manage, ideal for serverless).
 
+- **Server vs Client components.** Server Components own the static shell and
+  routing: the root layout, the dashboard layout, and the page files
+  (`app/clients/[clientId]/page.tsx` unwraps the `params` Promise on the server
+  and hands the id to a client component). Everything interactive — directory,
+  client context, chat, the action dialogs — is a Client Component, because the
+  value here is live mutation + optimistic state, which React Query drives on the
+  client. The route handlers under `app/api/*` are the server-side BFF. I chose
+  client-side data fetching over RSC data fetching deliberately (see Trade-offs).
+
 - **State — TanStack Query + URL-as-state.** The app is almost entirely server
   state, so React Query owns fetching, caching, and the loading/empty/error
   surfaces. Selection lives in the URL (`/clients/[clientId]`) so it's
-  shareable, survives reload, and drives the responsive shell.
+  shareable, survives reload, and drives the responsive shell. The React
+  Compiler is enabled, so memoization is automatic (no `useMemo`/`useCallback`).
 
 - **Optimistic action — chat.** `useSendMessage` paints the coach's message
   instantly with a temp id (`onMutate`), reconciles with the persisted row on
