@@ -1,0 +1,245 @@
+[
+  {
+    "id": "c_maya_chen",
+    "firstName": "Maya",
+    "lastName": "Chen",
+    "avatarUrl": null,
+    "goals": [
+      "Sub-4:00 marathon by October 2026",
+      "Maintain lower-body strength through peak training",
+      "Injury-proof knees and hips"
+    ],
+    "thingsToKnow": "Left IT band flared in March — keep single-leg volume moderate until she's back to full pain-free mileage. Prefers Tue/Thu/Sat sessions.",
+    "upcomingWorkouts": [
+      {
+        "id": "w_maya_01",
+        "date": "2026-04-18T10:00:00Z",
+        "title": "Tempo run + posterior chain",
+        "exercises": [
+          { "exerciseId": "00036a08-7c22-42e4-8fe5-323b53e31667", "name": "Kettlebell Goblet Cyclist Squat", "sets": 3, "reps": 8 },
+          { "exerciseId": "0b1250ab-ac21-42a3-8aff-87f75e85eea0", "name": "Bench-Supported Incline YTI", "sets": 2, "reps": 12 }
+        ]
+      },
+      {
+        "id": "w_maya_02",
+        "date": "2026-04-21T10:00:00Z",
+        "title": "Speed intervals",
+        "exercises": [
+          { "exerciseId": "0a2dc786-fb42-4571-9b26-f58cdeb2c70e", "name": "Bodyweight Pike", "sets": 3, "reps": 10 }
+        ]
+      }
+    ],
+    "recentActivity": [
+      { "id": "a_maya_01", "type": "workout", "date": "2026-04-15T10:30:00Z", "summary": "Completed easy 45-min run + core. Reported calves felt tight." },
+      { "id": "a_maya_02", "type": "message", "date": "2026-04-14T18:22:00Z", "summary": "Asked about swapping Saturday long run for Sunday — traveling." },
+      { "id": "a_maya_03", "type": "note", "date": "2026-04-12T09:00:00Z", "summary": "Adjusted weekly mileage from 38 → 42 mi. Monitor IT band." }
+    ]
+  },
+  {
+    "id": "c_derek_jackson",
+    "firstName": "Derek",
+    "lastName": "Jackson",
+    "avatarUrl": null,
+    "goals": [
+      "Return to full basketball by August 2026 (post right-ACL)",
+      "Rebuild single-leg strength symmetry",
+      "Regain vertical"
+    ],
+    "thingsToKnow": "10 months post-op right ACL reconstruction. Cleared for bilateral loading and controlled plyos — no cutting or max-effort jumping yet. PT is Dr. Wallace, copied on workouts.",
+    "upcomingWorkouts": [
+      {
+        "id": "w_derek_01",
+        "date": "2026-04-18T15:00:00Z",
+        "title": "Lower body — bilateral + controlled unilateral",
+        "exercises": [
+          { "exerciseId": "00036a08-7c22-42e4-8fe5-323b53e31667", "name": "Kettlebell Goblet Cyclist Squat", "sets": 4, "reps": 6 },
+          { "exerciseId": "01128a8f-44a4-43ae-a172-b6a32b2e8534", "name": "Med Ball Scoop Toss", "sets": 3, "reps": 8 }
+        ]
+      }
+    ],
+    "recentActivity": [
+      { "id": "a_derek_01", "type": "workout", "date": "2026-04-16T15:00:00Z", "summary": "Upper push day. Added 5 lbs on bench. No knee symptoms." },
+      { "id": "a_derek_02", "type": "note", "date": "2026-04-10T12:00:00Z", "summary": "Single-leg press 1RM asymmetry down to 8% (was 22% in January)." },
+      { "id": "a_derek_03", "type": "message", "date": "2026-04-08T20:15:00Z", "summary": "Shared PT clearance note for controlled plyos." }
+    ]
+  },
+  {
+    "id": "c_aisha_patel",
+    "firstName": "Aisha",
+    "lastName": "Patel",
+    "avatarUrl": null,
+    "goals": [
+      "Rebuild core strength postpartum (14 months)",
+      "Be able to lift her toddler pain-free",
+      "Establish a sustainable 3x/week routine"
+    ],
+    "thingsToKnow": "Diastasis resolved per her OB, but she's still cautious about anti-extension loading. Trains at 6am before kids wake up — keep sessions under 45 min.",
+    "upcomingWorkouts": [
+      {
+        "id": "w_aisha_01",
+        "date": "2026-04-19T06:00:00Z",
+        "title": "Full body — push-pull-hinge",
+        "exercises": [
+          { "exerciseId": "0e3201e9-4394-4902-a717-f4ce544d98de", "name": "Push-Up to Knee-Drive", "sets": 3, "reps": 8 },
+          { "exerciseId": "0b6fcb1c-aa47-455b-8a9f-f9d1582745df", "name": "Band-Assisted Chin-Up (From Foot)", "sets": 3, "reps": 5 }
+        ]
+      },
+      {
+        "id": "w_aisha_02",
+        "date": "2026-04-22T06:00:00Z",
+        "title": "Core + mobility",
+        "exercises": [
+          { "exerciseId": "12918da8-e735-45e3-9185-8f6c074397a3", "name": "Kneeling Stability Ball Lat Stretch", "sets": 2, "reps": 10 }
+        ]
+      }
+    ],
+    "recentActivity": [
+      { "id": "a_aisha_01", "type": "workout", "date": "2026-04-15T06:00:00Z", "summary": "First unassisted chin-up negative! Logged & celebrated." },
+      { "id": "a_aisha_02", "type": "message", "date": "2026-04-13T21:40:00Z", "summary": "Kid was sick, missed Monday. Asked to shift the week." }
+    ]
+  },
+  {
+    "id": "c_tom_ramirez",
+    "firstName": "Tom",
+    "lastName": "Ramírez",
+    "avatarUrl": null,
+    "goals": [
+      "Gain 8 lbs of lean mass by end of Q3",
+      "Press bodyweight overhead"
+    ],
+    "thingsToKnow": "Trains at home — only dumbbells up to 60 lbs, a bench, and a pull-up bar. Avoid programming anything that needs a rack or barbell.",
+    "upcomingWorkouts": [
+      {
+        "id": "w_tom_01",
+        "date": "2026-04-18T18:30:00Z",
+        "title": "Upper body hypertrophy",
+        "exercises": [
+          { "exerciseId": "1465f189-eb62-410d-a73e-590a84693dd0", "name": "Dumbbell Neutral-Grip Bench Press", "sets": 4, "reps": 10 },
+          { "exerciseId": "13261989-7436-44d0-8daf-754b259e5af8", "name": "Dumbbell Incline Chest Fly", "sets": 3, "reps": 12 },
+          { "exerciseId": "03258dbf-bc21-4495-bcae-ca627b3a0f20", "name": "Alternating Dumbbell Overhead Press", "sets": 3, "reps": 10 }
+        ]
+      }
+    ],
+    "recentActivity": [
+      { "id": "a_tom_01", "type": "workout", "date": "2026-04-16T18:45:00Z", "summary": "Hit 60s for 8 on neutral-grip bench. Time to deload next session." },
+      { "id": "a_tom_02", "type": "note", "date": "2026-04-14T08:00:00Z", "summary": "Up 1.4 lbs over 3 weeks. Protein intake on track at 180g/day." },
+      { "id": "a_tom_03", "type": "workout", "date": "2026-04-13T18:30:00Z", "summary": "Lower body. DB step-ups x4. Reported 'legs on fire'." }
+    ]
+  },
+  {
+    "id": "c_lindsey_obrien",
+    "firstName": "Lindsey",
+    "lastName": "O'Brien",
+    "avatarUrl": null,
+    "goals": [
+      "Add 10 yards off the tee",
+      "Shoulder mobility + rotational power",
+      "Reduce low-back stiffness after 18 holes"
+    ],
+    "thingsToKnow": "Chronic left shoulder impingement — flagged by PT. Avoid heavy overhead pressing. Rotational and anti-rotational work is the priority.",
+    "upcomingWorkouts": [
+      {
+        "id": "w_lindsey_01",
+        "date": "2026-04-20T12:00:00Z",
+        "title": "Rotational power + thoracic mobility",
+        "exercises": [
+          { "exerciseId": "01128a8f-44a4-43ae-a172-b6a32b2e8534", "name": "Med Ball Scoop Toss", "sets": 4, "reps": 6 },
+          { "exerciseId": "12918da8-e735-45e3-9185-8f6c074397a3", "name": "Kneeling Stability Ball Lat Stretch", "sets": 2, "reps": 10 }
+        ]
+      }
+    ],
+    "recentActivity": [
+      { "id": "a_lindsey_01", "type": "message", "date": "2026-04-16T17:10:00Z", "summary": "Shot 82 — lowest round this year. Credited the hip mobility work." },
+      { "id": "a_lindsey_02", "type": "workout", "date": "2026-04-14T12:00:00Z", "summary": "Rotational day. Med ball toss velocity up from last month." }
+    ]
+  },
+  {
+    "id": "c_kenji_watanabe",
+    "firstName": "Kenji",
+    "lastName": "Watanabe",
+    "avatarUrl": null,
+    "goals": [
+      "Lose 25 lbs by end of year",
+      "Build a consistent 3x/week habit",
+      "Learn correct squat and deadlift form"
+    ],
+    "thingsToKnow": "First time working with a trainer. Self-conscious about fitness level — be encouraging, keep early sessions high-confidence. No dietary restrictions.",
+    "upcomingWorkouts": [
+      {
+        "id": "w_kenji_01",
+        "date": "2026-04-18T17:00:00Z",
+        "title": "Foundations — movement quality",
+        "exercises": [
+          { "exerciseId": "00036a08-7c22-42e4-8fe5-323b53e31667", "name": "Kettlebell Goblet Cyclist Squat", "sets": 3, "reps": 8 },
+          { "exerciseId": "0e3201e9-4394-4902-a717-f4ce544d98de", "name": "Push-Up to Knee-Drive", "sets": 3, "reps": 6 }
+        ]
+      }
+    ],
+    "recentActivity": [
+      { "id": "a_kenji_01", "type": "workout", "date": "2026-04-15T17:00:00Z", "summary": "Third session this week — first time ever. Big win." },
+      { "id": "a_kenji_02", "type": "note", "date": "2026-04-11T09:00:00Z", "summary": "Baseline measurements logged. Start: 218 lbs." }
+    ]
+  },
+  {
+    "id": "c_priya_shah",
+    "firstName": "Priya",
+    "lastName": "Shah",
+    "avatarUrl": null,
+    "goals": [
+      "Total 1000 lbs at her June meet",
+      "Hit a 330 lb deadlift",
+      "Stay injury-free through peak"
+    ],
+    "thingsToKnow": "Competing in the 165 lb class. 8 weeks out from meet. Peaking protocol in effect — no new movements, only meet-specific variations. Weighs in Friday mornings.",
+    "upcomingWorkouts": [
+      {
+        "id": "w_priya_01",
+        "date": "2026-04-18T07:00:00Z",
+        "title": "Heavy squat + accessories",
+        "exercises": [
+          { "exerciseId": "004717c7-4e34-4a26-978f-50106f09abcc", "name": "Wide-Grip Preacher Curl with EZ Bar", "sets": 3, "reps": 10 }
+        ]
+      },
+      {
+        "id": "w_priya_02",
+        "date": "2026-04-20T07:00:00Z",
+        "title": "Bench + upper accessories",
+        "exercises": [
+          { "exerciseId": "0b3178cf-bf89-45a3-bfb0-27310ef6ef38", "name": "Barbell Decline Bench Press", "sets": 5, "reps": 3 }
+        ]
+      }
+    ],
+    "recentActivity": [
+      { "id": "a_priya_01", "type": "workout", "date": "2026-04-16T07:00:00Z", "summary": "Deadlift triple at 295. Moved fast — green light for next jump." },
+      { "id": "a_priya_02", "type": "message", "date": "2026-04-15T19:00:00Z", "summary": "Confirmed singlet order arrived. Good to go for meet." },
+      { "id": "a_priya_03", "type": "note", "date": "2026-04-09T08:00:00Z", "summary": "Opener projections: 215 / 140 / 300. Revisit in 3 weeks." }
+    ]
+  },
+  {
+    "id": "c_jordan_weiss",
+    "firstName": "Jordan",
+    "lastName": "Weiss",
+    "avatarUrl": null,
+    "goals": [
+      "Reduce daily neck and low-back tightness",
+      "Build a baseline strength habit",
+      "Feel energized — not drained — after training"
+    ],
+    "thingsToKnow": "Desk-bound software engineer, 10+ hours of sitting per day. Poor hip extension and thoracic mobility. Prefers short, frequent sessions (30 min, 4x/week) over long ones.",
+    "upcomingWorkouts": [
+      {
+        "id": "w_jordan_01",
+        "date": "2026-04-18T12:15:00Z",
+        "title": "Lunch break — posterior chain + mobility",
+        "exercises": [
+          { "exerciseId": "0b1250ab-ac21-42a3-8aff-87f75e85eea0", "name": "Bench-Supported Incline YTI", "sets": 3, "reps": 10 },
+          { "exerciseId": "0a2dc786-fb42-4571-9b26-f58cdeb2c70e", "name": "Bodyweight Pike", "sets": 2, "reps": 8 }
+        ]
+      }
+    ],
+    "recentActivity": [
+      { "id": "a_jordan_01", "type": "workout", "date": "2026-04-16T12:15:00Z", "summary": "Completed 28 min. Neck felt better by end." },
+      { "id": "a_jordan_02", "type": "message", "date": "2026-04-14T22:30:00Z", "summary": "Asked for standing desk recommendations." }
+    ]
+  }
+]
