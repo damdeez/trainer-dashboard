@@ -1,6 +1,5 @@
-import { config } from "dotenv";
-config({ path: ".env.local" });
-
+// Env is loaded by the `db:seed` script via tsx's --env-file-if-exists flag
+// (loaded before module evaluation, so ./client sees DATABASE_URL on import).
 import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -14,7 +13,46 @@ import {
   activity,
 } from "./schema";
 
-type SeedExercise = typeof exercises.$inferInsert;
+// The exercises JSON ships snake_case keys (the upstream catalog format).
+// Drizzle's insert expects the schema's camelCase property names, so map
+// explicitly — otherwise unknown keys are silently dropped and every jsonb
+// column falls back to its `[]` / boolean default.
+type RawExercise = {
+  id: string;
+  name: string;
+  muscle_groups: string[];
+  joints_loaded: string[];
+  movement_patterns: string[];
+  equipment_required: string[];
+  is_bilateral: boolean;
+  side: string | null;
+  priority_tier: number | null;
+  is_reps: boolean;
+  is_duration: boolean;
+  supports_weight: boolean;
+  estimated_rep_duration: number | null;
+  bilateral_pair_id: string | null;
+};
+
+function toExerciseRow(e: RawExercise): typeof exercises.$inferInsert {
+  return {
+    id: e.id,
+    name: e.name,
+    muscleGroups: e.muscle_groups,
+    jointsLoaded: e.joints_loaded,
+    movementPatterns: e.movement_patterns,
+    equipmentRequired: e.equipment_required,
+    isBilateral: e.is_bilateral,
+    side: e.side,
+    priorityTier: e.priority_tier,
+    isReps: e.is_reps,
+    isDuration: e.is_duration,
+    supportsWeight: e.supports_weight,
+    estimatedRepDuration: e.estimated_rep_duration,
+    bilateralPairId: e.bilateral_pair_id,
+  };
+}
+
 type SeedClient = {
   id: string;
   firstName: string;
@@ -41,7 +79,7 @@ function load<T>(file: string): T {
 }
 
 async function main() {
-  const exerciseRows = load<SeedExercise[]>("exercises.json");
+  const exerciseRows = load<RawExercise[]>("exercises.json").map(toExerciseRow);
   const clientRows = load<SeedClient[]>("clients.json");
 
   console.log("Clearing existing data…");

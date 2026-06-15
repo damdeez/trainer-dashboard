@@ -11,6 +11,9 @@ export default defineConfig({
   dbCredentials: {
     url: process.env.DATABASE_URL!,
   },
-  strict: true,
+  // strict prompts for confirmation on every push (even non-destructive),
+  // which deadlocks non-interactive runs. Push still refuses data-loss
+  // statements unless `--force` is passed.
+  strict: false,
   verbose: true,
 });
