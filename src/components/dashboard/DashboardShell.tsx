@@ -14,7 +14,11 @@ import { ClientDirectory } from "./ClientDirectory";
  * Selection lives in the URL (`/clients/[clientId]`), so it survives reload
  * and is shareable. We read the active segment to toggle mobile visibility.
  */
-export function DashboardShell({ children }: { children: ReactNode }) {
+interface DashboardShellProps {
+  children: ReactNode;
+}
+
+export function DashboardShell({ children }: DashboardShellProps) {
   // null on /clients, the clientId on /clients/[clientId].
   const hasSelection = useSelectedLayoutSegment() !== null;
 

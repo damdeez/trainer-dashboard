@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Plus, X } from "lucide-react";
-import { useUpdateClient } from "@/lib/api/hooks";
+import { useUpdateClient } from "@/lib/hooks/useApi";
 import type { ClientDetail } from "@/lib/api/schemas";
 import { ResponsiveModal } from "./ResponsiveModal";
 import { Button } from "@/components/ui/button";
@@ -10,15 +10,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
+interface EditClientDialogProps {
+  client: ClientDetail;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
 export function EditClientDialog({
   client,
   open,
   onOpenChange,
-}: {
-  client: ClientDetail;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
+}: EditClientDialogProps) {
   const update = useUpdateClient(client.id);
   const [firstName, setFirstName] = useState(client.firstName);
   const [lastName, setLastName] = useState(client.lastName);
@@ -50,7 +52,9 @@ export function EditClientDialog({
         className="space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
-          if (canSubmit) submit();
+          if (canSubmit) {
+            submit();
+          }
         }}
       >
         <div className="grid grid-cols-2 gap-3">

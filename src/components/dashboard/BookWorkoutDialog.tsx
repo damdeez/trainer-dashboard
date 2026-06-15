@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useCreateWorkout } from "@/lib/api/hooks";
+import { useCreateWorkout } from "@/lib/hooks/useApi";
 import { cn } from "@/lib/utils";
 import { ResponsiveModal } from "./ResponsiveModal";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -16,15 +16,17 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+interface BookWorkoutDialogProps {
+  clientId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
 export function BookWorkoutDialog({
   clientId,
   open,
   onOpenChange,
-}: {
-  clientId: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
+}: BookWorkoutDialogProps) {
   const create = useCreateWorkout(clientId);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState<Date | undefined>();
@@ -37,7 +39,9 @@ export function BookWorkoutDialog({
   }
 
   function submit() {
-    if (!date || !title.trim()) return;
+    if (!date || !title.trim()) {
+      return;
+    }
     const [h, m] = time.split(":").map(Number);
     const when = new Date(date);
     when.setHours(h ?? 9, m ?? 0, 0, 0);
@@ -65,7 +69,9 @@ export function BookWorkoutDialog({
         className="space-y-4"
         onSubmit={(e) => {
           e.preventDefault();
-          if (canSubmit) submit();
+          if (canSubmit) {
+            submit();
+          }
         }}
       >
         <div className="space-y-1.5">

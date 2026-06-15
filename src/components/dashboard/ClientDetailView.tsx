@@ -11,7 +11,7 @@ import {
   Pencil,
   Target,
 } from "lucide-react";
-import { useClient } from "@/lib/api/hooks";
+import { useClient } from "@/lib/hooks/useApi";
 import type { ClientDetail } from "@/lib/api/schemas";
 import { formatRelative, formatWorkoutDate, initials } from "@/lib/format";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -24,13 +24,149 @@ import { EditClientDialog } from "./EditClientDialog";
 import { BookWorkoutDialog } from "./BookWorkoutDialog";
 import { CreateWorkoutDialog } from "./CreateWorkoutDialog";
 
-export function ClientDetailView({ clientId }: { clientId: string }) {
+function DetailSkeleton() {
+  return (
+    <div className="space-y-6 p-4">
+      <div className="flex items-center gap-4">
+        <Skeleton className="size-14 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-3.5 w-28" />
+        </div>
+      </div>
+      <Skeleton className="h-8 w-56" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-4/5" />
+        <Skeleton className="h-4 w-3/5" />
+      </div>
+    </div>
+  );
+}
+
+interface OverviewProps {
+  client: ClientDetail;
+}
+
+function Overview({ client }: OverviewProps) {
+  return (
+    <div className="space-y-6">
+      <section>
+        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+          <Target className="size-4" /> Goals
+        </h2>
+        {client.goals.length > 0 ? (
+          <ul className="space-y-1.5">
+            {client.goals.map((g, i) => (
+              <li key={i} className="flex gap-2 text-sm">
+                <span className="text-muted-foreground">•</span>
+                <span>{g}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-muted-foreground text-sm">No goals set yet.</p>
+        )}
+      </section>
+
+      <section>
+        <h2 className="mb-2 text-sm font-medium">Things to know</h2>
+        <p className="text-muted-foreground text-sm whitespace-pre-wrap">
+          {client.thingsToKnow || "Nothing noted yet."}
+        </p>
+      </section>
+
+      <section>
+        <h2 className="mb-2 text-sm font-medium">Recent activity</h2>
+        {client.activity.length > 0 ? (
+          <ul className="space-y-3">
+            {client.activity.slice(0, 8).map((a) => (
+              <li key={a.id} className="flex gap-3 text-sm">
+                <span className="bg-muted-foreground/40 mt-1.5 size-2 shrink-0 rounded-full" />
+                <div>
+                  <p>{a.summary}</p>
+                  <p className="text-muted-foreground text-xs">
+                    {formatRelative(a.occurredAt)}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-muted-foreground text-sm">No activity yet.</p>
+        )}
+      </section>
+    </div>
+  );
+}
+
+interface PlansProps {
+  client: ClientDetail;
+  onCreate: () => void;
+}
+
+function Plans({ client, onCreate }: PlansProps) {
+  if (client.workouts.length === 0) {
+    return (
+      <div className="text-muted-foreground flex flex-col items-center gap-3 py-10 text-center text-sm">
+        <Dumbbell className="size-8 opacity-40" />
+        <p>No workouts yet.</p>
+        <Button size="sm" variant="outline" onClick={onCreate}>
+          Create the first plan
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <ul className="space-y-3">
+      {client.workouts.map((w) => (
+        <li key={w.id} className="rounded-lg border p-3">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <p className="font-medium">{w.title}</p>
+              <p className="text-muted-foreground text-xs">
+                {formatWorkoutDate(w.date)}
+              </p>
+            </div>
+            <Badge variant={w.status === "scheduled" ? "default" : "secondary"}>
+              {w.status}
+            </Badge>
+          </div>
+          {w.exercises.length > 0 && (
+            <ul className="mt-2 space-y-1 border-t pt-2">
+              {w.exercises.map((ex) => (
+                <li
+                  key={ex.id}
+                  className="text-muted-foreground flex justify-between text-sm"
+                >
+                  <span>{ex.name}</span>
+                  <span className="tabular-nums">
+                    {ex.sets} × {ex.reps}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+interface ClientDetailViewProps {
+  clientId: string;
+}
+
+export function ClientDetailView({ clientId }: ClientDetailViewProps) {
   const { data: client, isLoading, isError, error, refetch } = useClient(clientId);
   const [editOpen, setEditOpen] = useState(false);
   const [bookOpen, setBookOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
 
-  if (isLoading) return <DetailSkeleton />;
+  if (isLoading) {
+    return <DetailSkeleton />;
+  }
 
   if (isError) {
     const notFound =
@@ -56,7 +192,9 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
     );
   }
 
-  if (!client) return null;
+  if (!client) {
+    return null;
+  }
 
   return (
     <div className="flex h-full flex-col">
@@ -135,144 +273,26 @@ export function ClientDetailView({ clientId }: { clientId: string }) {
         </TabsContent>
       </Tabs>
 
-      <EditClientDialog client={client} open={editOpen} onOpenChange={setEditOpen} />
+      {/* key per client: re-mounts each form so its useState re-seeds from the
+          newly selected client instead of going stale when selection changes. */}
+      <EditClientDialog
+        key={`edit-${client.id}`}
+        client={client}
+        open={editOpen}
+        onOpenChange={setEditOpen}
+      />
       <BookWorkoutDialog
+        key={`book-${client.id}`}
         clientId={client.id}
         open={bookOpen}
         onOpenChange={setBookOpen}
       />
       <CreateWorkoutDialog
+        key={`create-${client.id}`}
         clientId={client.id}
         open={createOpen}
         onOpenChange={setCreateOpen}
       />
-    </div>
-  );
-}
-
-function Overview({ client }: { client: ClientDetail }) {
-  return (
-    <div className="space-y-6">
-      <section>
-        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-medium">
-          <Target className="size-4" /> Goals
-        </h2>
-        {client.goals.length > 0 ? (
-          <ul className="space-y-1.5">
-            {client.goals.map((g, i) => (
-              <li key={i} className="flex gap-2 text-sm">
-                <span className="text-muted-foreground">•</span>
-                <span>{g}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-muted-foreground text-sm">No goals set yet.</p>
-        )}
-      </section>
-
-      <section>
-        <h2 className="mb-2 text-sm font-medium">Things to know</h2>
-        <p className="text-muted-foreground text-sm whitespace-pre-wrap">
-          {client.thingsToKnow || "Nothing noted yet."}
-        </p>
-      </section>
-
-      <section>
-        <h2 className="mb-2 text-sm font-medium">Recent activity</h2>
-        {client.activity.length > 0 ? (
-          <ul className="space-y-3">
-            {client.activity.slice(0, 8).map((a) => (
-              <li key={a.id} className="flex gap-3 text-sm">
-                <span className="bg-muted-foreground/40 mt-1.5 size-2 shrink-0 rounded-full" />
-                <div>
-                  <p>{a.summary}</p>
-                  <p className="text-muted-foreground text-xs">
-                    {formatRelative(a.occurredAt)}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-muted-foreground text-sm">No activity yet.</p>
-        )}
-      </section>
-    </div>
-  );
-}
-
-function Plans({
-  client,
-  onCreate,
-}: {
-  client: ClientDetail;
-  onCreate: () => void;
-}) {
-  if (client.workouts.length === 0) {
-    return (
-      <div className="text-muted-foreground flex flex-col items-center gap-3 py-10 text-center text-sm">
-        <Dumbbell className="size-8 opacity-40" />
-        <p>No workouts yet.</p>
-        <Button size="sm" variant="outline" onClick={onCreate}>
-          Create the first plan
-        </Button>
-      </div>
-    );
-  }
-
-  return (
-    <ul className="space-y-3">
-      {client.workouts.map((w) => (
-        <li key={w.id} className="rounded-lg border p-3">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="font-medium">{w.title}</p>
-              <p className="text-muted-foreground text-xs">
-                {formatWorkoutDate(w.date)}
-              </p>
-            </div>
-            <Badge variant={w.status === "scheduled" ? "default" : "secondary"}>
-              {w.status}
-            </Badge>
-          </div>
-          {w.exercises.length > 0 && (
-            <ul className="mt-2 space-y-1 border-t pt-2">
-              {w.exercises.map((ex) => (
-                <li
-                  key={ex.id}
-                  className="text-muted-foreground flex justify-between text-sm"
-                >
-                  <span>{ex.name}</span>
-                  <span className="tabular-nums">
-                    {ex.sets} × {ex.reps}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function DetailSkeleton() {
-  return (
-    <div className="space-y-6 p-4">
-      <div className="flex items-center gap-4">
-        <Skeleton className="size-14 rounded-full" />
-        <div className="space-y-2">
-          <Skeleton className="h-5 w-40" />
-          <Skeleton className="h-3.5 w-28" />
-        </div>
-      </div>
-      <Skeleton className="h-8 w-56" />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-4/5" />
-        <Skeleton className="h-4 w-3/5" />
-      </div>
     </div>
   );
 }

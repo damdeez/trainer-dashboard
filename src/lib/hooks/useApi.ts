@@ -6,13 +6,13 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { api, queryKeys } from "./endpoints";
+import { api, queryKeys } from "@/lib/api/endpoints";
 import type {
   ClientDetail,
   CreateWorkoutInput,
   Message,
   UpdateClientInput,
-} from "./schemas";
+} from "@/lib/api/schemas";
 
 // ---------------------------------------------------------------------------
 // Queries
@@ -78,7 +78,9 @@ export function useSendMessage(clientId: string) {
       return { previous, optimisticId: optimistic.id };
     },
     onError: (error, _body, context) => {
-      if (context) qc.setQueryData(key, context.previous);
+      if (context) {
+        qc.setQueryData(key, context.previous);
+      }
       toast.error("Message failed to send", {
         description: error instanceof Error ? error.message : undefined,
       });

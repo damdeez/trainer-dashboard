@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useClients } from "@/lib/api/hooks";
+import { useClients } from "@/lib/hooks/useApi";
 import { initials } from "@/lib/format";
 import {
   CommandDialog,
@@ -18,13 +18,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
  * ⌘K / Ctrl-K command palette — jump straight to any client. Mounted once in
  * the dashboard header; opens via keyboard shortcut or the header button.
  */
-export function CommandPalette({
-  open,
-  onOpenChange,
-}: {
+interface CommandPaletteProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-}) {
+}
+
+export function CommandPalette({ open, onOpenChange }: CommandPaletteProps) {
   const router = useRouter();
   const { data: clients } = useClients();
 
@@ -68,9 +67,4 @@ export function CommandPalette({
       </CommandList>
     </CommandDialog>
   );
-}
-
-/** Convenience hook so the header can own the open state. */
-export function useCommandPalette() {
-  return useState(false);
 }

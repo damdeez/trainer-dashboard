@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Send } from "lucide-react";
-import { useMessages, useSendMessage } from "@/lib/api/hooks";
+import { useMessages, useSendMessage } from "@/lib/hooks/useApi";
 import type { Message } from "@/lib/api/schemas";
 import { cn } from "@/lib/utils";
 import { formatTime } from "@/lib/format";
@@ -10,7 +10,54 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function ChatPanel({ clientId }: { clientId: string }) {
+interface ChatBubbleProps {
+  message: Message;
+}
+
+function ChatBubble({ message }: ChatBubbleProps) {
+  const isCoach = message.sender === "coach";
+  const isPending = message.id.startsWith("optimistic_");
+  return (
+    <div className={cn("flex", isCoach ? "justify-end" : "justify-start")}>
+      <div
+        className={cn(
+          "max-w-[80%] rounded-2xl px-3.5 py-2 text-sm",
+          isCoach
+            ? "bg-primary text-primary-foreground rounded-br-sm"
+            : "bg-muted rounded-bl-sm",
+          isPending && "opacity-60",
+        )}
+      >
+        <p className="break-words whitespace-pre-wrap">{message.body}</p>
+        <p
+          className={cn(
+            "mt-1 text-[10px]",
+            isCoach ? "text-primary-foreground/70" : "text-muted-foreground",
+          )}
+        >
+          {isPending ? "Sending…" : formatTime(message.createdAt)}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function ChatSkeleton() {
+  return (
+    <div className="space-y-3" aria-hidden>
+      <Skeleton className="h-10 w-48" />
+      <Skeleton className="ml-auto h-10 w-40" />
+      <Skeleton className="h-14 w-56" />
+      <Skeleton className="ml-auto h-10 w-44" />
+    </div>
+  );
+}
+
+interface ChatPanelProps {
+  clientId: string;
+}
+
+export function ChatPanel({ clientId }: ChatPanelProps) {
   const { data: messages, isLoading, isError, refetch } = useMessages(clientId);
   const sendMessage = useSendMessage(clientId);
   const [draft, setDraft] = useState("");
@@ -23,7 +70,9 @@ export function ChatPanel({ clientId }: { clientId: string }) {
 
   function send() {
     const body = draft.trim();
-    if (!body) return;
+    if (!body) {
+      return;
+    }
     setDraft("");
     sendMessage.mutate(body);
   }
@@ -80,45 +129,6 @@ export function ChatPanel({ clientId }: { clientId: string }) {
           <span className="sr-only">Send</span>
         </Button>
       </form>
-    </div>
-  );
-}
-
-function ChatBubble({ message }: { message: Message }) {
-  const isCoach = message.sender === "coach";
-  const isPending = message.id.startsWith("optimistic_");
-  return (
-    <div className={cn("flex", isCoach ? "justify-end" : "justify-start")}>
-      <div
-        className={cn(
-          "max-w-[80%] rounded-2xl px-3.5 py-2 text-sm",
-          isCoach
-            ? "bg-primary text-primary-foreground rounded-br-sm"
-            : "bg-muted rounded-bl-sm",
-          isPending && "opacity-60",
-        )}
-      >
-        <p className="break-words whitespace-pre-wrap">{message.body}</p>
-        <p
-          className={cn(
-            "mt-1 text-[10px]",
-            isCoach ? "text-primary-foreground/70" : "text-muted-foreground",
-          )}
-        >
-          {isPending ? "Sending…" : formatTime(message.createdAt)}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function ChatSkeleton() {
-  return (
-    <div className="space-y-3" aria-hidden>
-      <Skeleton className="h-10 w-48" />
-      <Skeleton className="ml-auto h-10 w-40" />
-      <Skeleton className="h-14 w-56" />
-      <Skeleton className="ml-auto h-10 w-44" />
     </div>
   );
 }

@@ -2,10 +2,10 @@ import type { ReactNode } from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, waitFor, act } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useSendMessage } from "./hooks";
-import { api, queryKeys } from "./endpoints";
-import { ApiRequestError } from "./fetcher";
-import type { Message } from "./schemas";
+import { useSendMessage } from "./useApi";
+import { api, queryKeys } from "@/lib/api/endpoints";
+import { ApiRequestError } from "@/lib/api/fetcher";
+import type { Message } from "@/lib/api/schemas";
 
 // Toasts are a side-effect we assert on, not exercise.
 vi.mock("sonner", () => ({

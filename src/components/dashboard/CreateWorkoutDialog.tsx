@@ -19,7 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Plus, Search, X } from "lucide-react";
-import { useCreateWorkout, useExercises } from "@/lib/api/hooks";
+import { useCreateWorkout, useExercises } from "@/lib/hooks/useApi";
 import type { WorkoutExerciseInput } from "@/lib/api/schemas";
 import { ResponsiveModal } from "./ResponsiveModal";
 import { Button } from "@/components/ui/button";
@@ -30,15 +30,94 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 type Picked = WorkoutExerciseInput & { exerciseId: string };
 
+function cnDrag(isDragging: boolean) {
+  return [
+    "bg-background flex items-center gap-2 rounded-md border p-2",
+    isDragging ? "relative z-10 shadow-md" : "",
+  ].join(" ");
+}
+
+interface NumberFieldProps {
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+}
+
+function NumberField({ label, value, onChange }: NumberFieldProps) {
+  return (
+    <Input
+      type="number"
+      min={1}
+      value={value}
+      onChange={(e) => onChange(Math.max(1, Number(e.target.value) || 1))}
+      className="h-7 w-14 px-2 text-center text-sm"
+      aria-label={label}
+    />
+  );
+}
+
+interface SortableExerciseProps {
+  item: Picked;
+  onChange: (patch: Partial<Picked>) => void;
+  onRemove: () => void;
+}
+
+function SortableExercise({ item, onChange, onRemove }: SortableExerciseProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: item.exerciseId });
+
+  return (
+    <li
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      className={cnDrag(isDragging)}
+    >
+      <button
+        type="button"
+        className="text-muted-foreground hover:text-foreground cursor-grab touch-none"
+        aria-label="Drag to reorder"
+        {...attributes}
+        {...listeners}
+      >
+        <GripVertical className="size-4" />
+      </button>
+      <span className="min-w-0 flex-1 truncate text-sm">{item.name}</span>
+      <NumberField
+        label="sets"
+        value={item.sets}
+        onChange={(v) => onChange({ sets: v })}
+      />
+      <span className="text-muted-foreground text-xs">×</span>
+      <NumberField
+        label="reps"
+        value={item.reps}
+        onChange={(v) => onChange({ reps: v })}
+      />
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        className="size-7 shrink-0"
+        onClick={onRemove}
+        aria-label={`Remove ${item.name}`}
+      >
+        <X className="size-4" />
+      </Button>
+    </li>
+  );
+}
+
+interface CreateWorkoutDialogProps {
+  clientId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
 export function CreateWorkoutDialog({
   clientId,
   open,
   onOpenChange,
-}: {
-  clientId: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
+}: CreateWorkoutDialogProps) {
   const create = useCreateWorkout(clientId);
   const [title, setTitle] = useState("");
   const [query, setQuery] = useState("");
@@ -51,7 +130,9 @@ export function CreateWorkoutDialog({
   );
 
   function add(ex: { id: string; name: string }) {
-    if (picked.some((p) => p.exerciseId === ex.id)) return;
+    if (picked.some((p) => p.exerciseId === ex.id)) {
+      return;
+    }
     setPicked((p) => [...p, { exerciseId: ex.id, name: ex.name, sets: 3, reps: 10 }]);
   }
 
@@ -77,7 +158,9 @@ export function CreateWorkoutDialog({
   }
 
   function submit() {
-    if (!title.trim() || picked.length === 0) return;
+    if (!title.trim() || picked.length === 0) {
+      return;
+    }
     create.mutate(
       {
         title: title.trim(),
@@ -244,85 +327,4 @@ export function CreateWorkoutDialog({
       </div>
     </ResponsiveModal>
   );
-}
-
-function SortableExercise({
-  item,
-  onChange,
-  onRemove,
-}: {
-  item: Picked;
-  onChange: (patch: Partial<Picked>) => void;
-  onRemove: () => void;
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: item.exerciseId });
-
-  return (
-    <li
-      ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={cnDrag(isDragging)}
-    >
-      <button
-        type="button"
-        className="text-muted-foreground hover:text-foreground cursor-grab touch-none"
-        aria-label="Drag to reorder"
-        {...attributes}
-        {...listeners}
-      >
-        <GripVertical className="size-4" />
-      </button>
-      <span className="min-w-0 flex-1 truncate text-sm">{item.name}</span>
-      <NumberField
-        label="sets"
-        value={item.sets}
-        onChange={(v) => onChange({ sets: v })}
-      />
-      <span className="text-muted-foreground text-xs">×</span>
-      <NumberField
-        label="reps"
-        value={item.reps}
-        onChange={(v) => onChange({ reps: v })}
-      />
-      <Button
-        type="button"
-        variant="ghost"
-        size="icon"
-        className="size-7 shrink-0"
-        onClick={onRemove}
-        aria-label={`Remove ${item.name}`}
-      >
-        <X className="size-4" />
-      </Button>
-    </li>
-  );
-}
-
-function NumberField({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-}) {
-  return (
-    <Input
-      type="number"
-      min={1}
-      value={value}
-      onChange={(e) => onChange(Math.max(1, Number(e.target.value) || 1))}
-      className="h-7 w-14 px-2 text-center text-sm"
-      aria-label={label}
-    />
-  );
-}
-
-function cnDrag(isDragging: boolean) {
-  return [
-    "bg-background flex items-center gap-2 rounded-md border p-2",
-    isDragging ? "relative z-10 shadow-md" : "",
-  ].join(" ");
 }

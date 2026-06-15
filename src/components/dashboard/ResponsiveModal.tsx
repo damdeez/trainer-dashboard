@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useIsDesktop } from "@/lib/hooks/use-media-query";
+import { useIsDesktop } from "@/lib/hooks/useMediaQuery";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +22,15 @@ import {
  * bottom-sheet Drawer (vaul) on mobile. Keeps the four action surfaces
  * consistent without each having to branch on viewport.
  */
+interface ResponsiveModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  description?: string;
+  children: ReactNode;
+  className?: string;
+}
+
 export function ResponsiveModal({
   open,
   onOpenChange,
@@ -29,14 +38,7 @@ export function ResponsiveModal({
   description,
   children,
   className,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  title: string;
-  description?: string;
-  children: ReactNode;
-  className?: string;
-}) {
+}: ResponsiveModalProps) {
   const isDesktop = useIsDesktop();
 
   if (isDesktop) {

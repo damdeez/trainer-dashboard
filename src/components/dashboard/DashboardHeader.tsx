@@ -1,12 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Dumbbell, Search } from "lucide-react";
-import { CommandPalette, useCommandPalette } from "./CommandPalette";
+import { CommandPalette } from "./CommandPalette";
 import { Button } from "@/components/ui/button";
 
 export function DashboardHeader() {
-  const [open, setOpen] = useCommandPalette();
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="flex h-14 shrink-0 items-center justify-between border-b px-4">
