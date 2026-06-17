@@ -237,7 +237,7 @@ export function ClientDetailView({ clientId }: ClientDetailViewProps) {
       {/* Tabbed context */}
       <Tabs defaultValue="overview" className="flex min-h-0 flex-1 flex-col">
         <div className="px-4 pt-3">
-          <TabsList>
+          <TabsList variant="line">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="chat" className="gap-1.5">
               <MessageSquare className="size-3.5" /> Chat
