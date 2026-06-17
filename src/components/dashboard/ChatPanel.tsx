@@ -20,17 +20,17 @@ function ChatBubble({ message }: ChatBubbleProps) {
     <div className={cn("flex", isCoach ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "max-w-[80%] rounded-2xl px-3.5 py-2 text-sm",
+          "max-w-[80%] rounded-2xl px-3 py-3 text-sm",
           isCoach
-            ? "bg-primary text-primary-foreground rounded-br-sm"
-            : "bg-muted rounded-bl-sm",
+            ? "bg-primary text-primary-foreground rounded-br-xs"
+            : "bg-muted rounded-bl-xs",
           isPending && "opacity-60",
         )}
       >
         <p className="wrap-break-word whitespace-pre-wrap">{message.body}</p>
         <p
           className={cn(
-            "mt-1 text-[10px]",
+            "pt-1 text-[10px]",
             isCoach ? "text-primary-foreground/70" : "text-muted-foreground",
           )}
         >
