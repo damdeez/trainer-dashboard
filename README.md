@@ -5,7 +5,7 @@ directory, see their full context, and take action — chat, book a session,
 build a workout plan, or edit their profile. **Every action persists across
 reload.**
 
-**Live:** https://trainer-dashboard-5cr6tub5g-damdeezs-projects.vercel.app
+**Live:** https://trainer-dashboard-beta.vercel.app
 &nbsp;·&nbsp; **Repo:** https://github.com/damdeez/trainer-dashboard
 
 ```

@@ -4,7 +4,7 @@ A slice of Future's coach dashboard: **pick a client → see their context → t
 action.** Built as a take-home. For the full write-up (API contract, edge cases,
 production thinking) see [README.md](./README.md).
 
-**Live:** https://trainer-dashboard-5cr6tub5g-damdeezs-projects.vercel.app
+**Live:** https://trainer-dashboard-beta.vercel.app
 
 ## What it does
 
