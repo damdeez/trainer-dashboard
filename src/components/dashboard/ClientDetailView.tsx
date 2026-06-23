@@ -35,7 +35,7 @@ function Overview({ client }: OverviewProps) {
   return (
     <div className="space-y-6">
       <section>
-        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+        <h2 className="mb-2 flex items-center gap-1.5 text-xs font-bold tracking-wide uppercase">
           <Target className="size-4" /> Goals
         </h2>
         {client.goals.length > 0 ? (
@@ -53,16 +53,22 @@ function Overview({ client }: OverviewProps) {
       </section>
 
       <section>
-        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+        <h2 className="mb-2 flex items-center gap-1.5 text-xs font-bold tracking-wide uppercase">
           <Info className="size-4" /> Things to know
         </h2>
-        <p className="text-muted-foreground text-sm whitespace-pre-wrap">
+        <p
+          className={
+            client.thingsToKnow
+              ? "text-sm whitespace-pre-wrap"
+              : "text-muted-foreground text-sm whitespace-pre-wrap"
+          }
+        >
           {client.thingsToKnow || "Nothing noted yet."}
         </p>
       </section>
 
       <section>
-        <h2 className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+        <h2 className="mb-2 flex items-center gap-1.5 text-xs font-bold tracking-wide uppercase">
           <Activity className="size-4" /> Recent activity
         </h2>
         {client.activity.length > 0 ? (
